@@ -53,19 +53,11 @@ button {
 @keyframes boil { 0% { background-position: 0 0; } 100% { background-position: 0 -30px; } }
 
 #success-potion-container {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, 50%); 
-    opacity: 0; z-index: 30; pointer-events: none;
-    transition: all 1s ease-out;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, 50%); 
+    opacity: 0; z-index: 30; pointer-events: none; transition: all 1s ease-out;
 }
-#success-potion-container.show {
-    transform: translate(-50%, -70%); 
-    opacity: 1;
-}
-#success-potion-img {
-    width: 150px;
-    animation: float-glow 2s infinite alternate;
-}
+#success-potion-container.show { transform: translate(-50%, -70%); opacity: 1; }
+#success-potion-img { width: 150px; animation: float-glow 2s infinite alternate; }
 @keyframes float-glow {
     0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
     100% { transform: translateY(-10px); filter: drop-shadow(0 0 35px rgba(255, 215, 0, 1)); }
@@ -74,13 +66,24 @@ button {
 #controls {
     position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 10;
 }
+
+/* تصميم الدائرة للتقليب */
 #stir-zone {
-    width: 280px; height: 60px; margin: 10px auto;
-    background: rgba(255,255,255,0.2); border: 2px dashed #fff;
-    color: white; line-height: 60px; border-radius: 30px;
+    width: 150px; height: 150px; margin: 10px auto;
+    background: rgba(255,255,255,0.1); border: 2px dashed #fff;
+    border-radius: 50%; position: relative;
     touch-action: none; display: none; cursor: crosshair;
 }
-#stir-icon { width: 40px; vertical-align: middle; margin-left: 10px; }
+#stir-zone span {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    color: rgba(255,255,255,0.6); pointer-events: none; font-size: 14px;
+}
+#stir-icon {
+    width: 35px; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -100%) rotate(0deg); /* نقطة الارتكاز */
+    transform-origin: bottom center; pointer-events: none; z-index: 5;
+}
+
 #wand-icon { width: 30px; vertical-align: middle; margin-left: 10px; transform: rotate(-45deg); }
 #wand-btn { background: #2e165c; display: block; margin: 10px auto; }
 
@@ -88,6 +91,5 @@ button {
     position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
     background: rgba(0, 0, 0, 0.9); color: gold; padding: 25px;
     font-size: 22px; font-weight: bold; border-radius: 10px;
-    display: none; z-index: 40; text-align: center; border: 2px solid gold;
-    width: 80%; line-height: 1.5;
+    display: none; z-index: 40; text-align: center; border: 2px solid gold; width: 80%; line-height: 1.5;
 }

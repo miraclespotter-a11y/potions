@@ -11,7 +11,7 @@ const cauldronImg = document.getElementById('cauldron-img');
 const liquid = document.getElementById('cauldron-liquid');
 const bubbles = document.querySelector('.bubbles');
 const resultMessage = document.getElementById('result-message');
-const ingredients = document.querySelectorAll('.ingredient-item'); // تعديل الاختيار هنا
+const ingredients = document.querySelectorAll('.ingredient-item');
 const successContainer = document.getElementById('success-potion-container');
 const successImg = document.getElementById('success-potion-img');
 
@@ -19,7 +19,6 @@ let addedIngredients = [];
 let isFireOn = false;
 let draggedItem = null;
 
-// متغيرات الحركة الدائرية
 let totalRotation = 0;
 let lastAngle = null;
 
@@ -57,7 +56,7 @@ fireBtn.addEventListener('click', () => {
 
 resetBtn.addEventListener('click', () => {
     addedIngredients = [];
-    cauldronImg.src = 'cauldron-empty.png';
+    cauldronImg.src = 'images/cauldron-empty.png'; // تعديل المسار
     liquid.style.backgroundColor = 'transparent';
     bubbles.style.opacity = 0;
     isFireOn = false;
@@ -70,7 +69,7 @@ resetBtn.addEventListener('click', () => {
     successContainer.classList.remove('show');
     
     ingredients.forEach(item => {
-        item.style.display = 'flex'; // إعادة إظهار العنصر
+        item.style.display = 'flex';
         item.style.position = 'static';
     });
 });
@@ -87,7 +86,7 @@ function startDrag(e) {
 
 function dragMove(e) {
     if (!draggedItem) return;
-    draggedItem.style.left = e.clientX - 35 + 'px'; // تعديل المنتصف للمكون
+    draggedItem.style.left = e.clientX - 35 + 'px'; 
     draggedItem.style.top = e.clientY - 35 + 'px';
 }
 
@@ -106,7 +105,7 @@ function dropItem(e) {
         draggedItem.style.display = 'none'; 
         
         const step = Math.min(addedIngredients.length, 3);
-        cauldronImg.src = `cauldron-${step}.png`;
+        cauldronImg.src = `images/cauldron-${step}.png`; // تعديل المسار
 
         liquid.style.backgroundColor = getSequenceColor(addedIngredients); 
         if(isFireOn) bubbles.style.opacity = 1;
@@ -128,7 +127,6 @@ startStirBtn.addEventListener('click', () => {
     stirIcon.style.transform = `translate(-50%, -100%) rotate(0rad)`;
 });
 
-// تتبع الحركة الدائرية (تمت المحافظة على حساباتك لأنها ستعمل تماماً داخل المرجل)
 stirZone.addEventListener('pointerdown', (e) => {
     const rect = stirZone.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -176,25 +174,25 @@ wandBtn.addEventListener('click', () => {
 function checkRecipe() {
     const hasPumpion = recipes.pumpion.every((ing, index) => addedIngredients[index] === ing);
     if (hasPumpion && addedIngredients.length === recipes.pumpion.length) {
-        triggerSuccess('potion-pumpion.png', '🎃 لقد أعددت وصفة جرعة رأس اليقطين بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 140, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 140, 0, 1))');
+        triggerSuccess('images/potion-pumpion.png', '🎃 لقد أعددت وصفة جرعة رأس اليقطين بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 140, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 140, 0, 1))');
         return;
     }
 
     const hasBoils = recipes.boils.every((ing, index) => addedIngredients[index] === ing);
     if (hasBoils && addedIngredients.length === recipes.boils.length) {
-        triggerSuccess('potion-boils.png', '🧪 لقد أعددت وصفة علاج الدمامل بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(135, 206, 235, 0.9)', 'drop-shadow(0 0 35px rgba(135, 206, 235, 1))');
+        triggerSuccess('images/potion-boils.png', '🧪 لقد أعددت وصفة علاج الدمامل بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(135, 206, 235, 0.9)', 'drop-shadow(0 0 35px rgba(135, 206, 235, 1))');
         return;
     }
 
     const hasForget = recipes.forgetfulness.every((ing, index) => addedIngredients[index] === ing);
     if (hasForget && addedIngredients.length === recipes.forgetfulness.length) {
-        triggerSuccess('potion-forget.png', '🌌 لقد أعددت وصفة جرعة النسيان بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 69, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 69, 0, 1))');
+        triggerSuccess('images/potion-forget.png', '🌌 لقد أعددت وصفة جرعة النسيان بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 69, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 69, 0, 1))');
         return;
     }
 
     liquid.style.backgroundColor = 'transparent'; 
     bubbles.style.opacity = 0;
-    cauldronImg.src = 'cauldron-exploded.png'; 
+    cauldronImg.src = 'images/cauldron-exploded.png'; // تعديل المسار
     showResult('💥 بوم! يبدو أنك أضفت مكونات خاطئة أو بترتيب غير صحيح، المرجل احترق!');
 }
 

@@ -1,131 +1,92 @@
-@font-face {
-    font-family: 'Tajawal';
-    src: url('Tajawal-Bold.ttf') format('truetype');
-}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>معمل الوصفات السحرية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="intro-screen">
+        <div class="intro-box">
+            <h1>مرحبا بكم في معمل الوصفات استمتعوا</h1>
+            <p>(احذروا الاقتراب من أي شيء دون إذن البروفيسور)</p>
+            <p>هل أنت مستعد لبدء العمل؟</p>
+            <button id="start-btn">هيا بنا</button>
+        </div>
+    </div>
 
-body, html {
-    margin: 0; padding: 0; width: 100%; height: 100%;
-    font-family: 'Tajawal', 'Tahoma', sans-serif;
-    overflow: hidden; 
-    background-color: #111;
-}
+    <div id="lab-screen" style="display: none;">
+        <button id="reset-btn">تفريغ المرجل 🗑️</button>
 
-#intro-screen {
-    width: 100%; height: 100%; 
-    background: url('lab-bg.jpg') center/cover;
-    display: flex; justify-content: center; align-items: center;
-}
+        <div id="ingredients-shelf">
+            <div class="ingredient-item" data-name="moth">
+                <img src="ing-moth.png" alt="عثة فليتربي">
+                <span>عثة فليتربي</span>
+            </div>
+            <div class="ingredient-item" data-name="bulb">
+                <img src="ing-bulb.png" alt="زهرة باونسينغ بلب">
+                <span>زهرة باونسينغ</span>
+            </div>
+            <div class="ingredient-item" data-name="foxglove">
+                <img src="ing-foxglove.png" alt="قفاز الثعلب">
+                <span>قفاز الثعلب</span>
+            </div>
+            <div class="ingredient-item" data-name="fangs">
+                <img src="ing-fangs.png" alt="أنياب ثعبان">
+                <span>أنياب ثعبان</span>
+            </div>
+            <div class="ingredient-item" data-name="slugs">
+                <img src="ing-slugs.png" alt="بزاقات مقرنة">
+                <span>بزاقات مقرنة</span>
+            </div>
+            <div class="ingredient-item" data-name="quills">
+                <img src="ing-quills.png" alt="أشواك قنفذ">
+                <span>أشواك قنفذ</span>
+            </div>
+            <div class="ingredient-item" data-name="lethe">
+                <img src="ing-lethe.png" alt="ماء نهر ليثي">
+                <span>ماء نهر ليثي</span>
+            </div>
+            <div class="ingredient-item" data-name="valerian">
+                <img src="ing-valerian.png" alt="حشيشة الهر">
+                <span>حشيشة الهر</span>
+            </div>
+            <div class="ingredient-item" data-name="mistletoe">
+                <img src="ing-mistletoe.png" alt="حبات الهدال">
+                <span>حبات الهدال</span>
+            </div>
+        </div>
 
-.intro-box {
-    background: rgba(0, 0, 0, 0.8); color: gold; padding: 30px; 
-    border-radius: 15px; text-align: center; border: 2px solid gold;
-}
+        <div id="cauldron-area">
+            <div id="cauldron-liquid">
+                <div class="bubbles"></div>
+            </div>
+            <img src="cauldron-empty.png" id="cauldron-img" alt="المرجل">
+            
+            <div id="stir-zone" style="display: none;">
+                <img src="stir-rod.png" id="stir-icon" alt="عود التقليب">
+                <span id="stir-text">حرك في دائرة</span>
+            </div>
+            
+            <div id="success-potion-container">
+                <img id="success-potion-img" src="" alt="جرعة ناجحة">
+            </div>
+        </div>
 
-button {
-    background: #5c162e; color: white; border: 2px solid gold;
-    padding: 10px 20px; font-size: 18px; border-radius: 8px;
-    cursor: pointer; font-weight: bold; margin: 5px;
-    font-family: 'Tajawal', sans-serif;
-}
+        <div id="controls">
+            <button id="fire-btn">أشعل النيران 🔥</button>
+            <button id="start-stir-btn" style="display: none;">تنفيذ أمر التقليب 🥄</button>
+            
+            <button id="wand-btn" style="display: none;">
+                <img src="magic-wand.png" id="wand-icon" alt="عصا سحرية">
+                لوّح بالعصا لإنهاء الجرعة
+            </button>
+        </div>
 
-#reset-btn {
-    position: absolute; top: 10px; right: 10px; z-index: 20;
-    background: #8b0000; font-size: 14px;
-}
+        <div id="result-message"></div>
+    </div>
 
-#lab-screen {
-    width: 100%; height: 100%; 
-    background: url('cauldron-top-bg.jpg') center/cover;
-    position: relative;
-}
-
-#ingredients-shelf {
-    display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
-    background: rgba(0,0,0,0.6); padding: 15px 10px 10px; 
-    position: absolute; top: 50px; width: 100%; z-index: 10;
-}
-
-.ingredient-item {
-    display: flex; flex-direction: column; align-items: center;
-    cursor: grab; touch-action: none;
-    width: 70px;
-}
-
-.ingredient-item img {
-    width: 50px; height: 50px; 
-    pointer-events: none;
-}
-
-.ingredient-item span {
-    color: white; font-size: 12px; margin-top: 5px;
-    text-align: center; pointer-events: none;
-}
-
-#cauldron-area {
-    position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-    width: 300px; height: 300px;
-}
-
-#cauldron-img {
-    width: 100%; height: 100%; position: absolute; z-index: 5; pointer-events: none;
-}
-
-#cauldron-liquid {
-    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%; 
-    border-radius: 50%; background-color: transparent; 
-    transition: background-color 1s; z-index: 2; overflow: hidden;
-}
-
-.bubbles {
-    width: 100%; height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 10%, transparent 20%);
-    background-size: 30px 30px; opacity: 0; transition: opacity 0.5s;
-    animation: boil 2s infinite linear;
-}
-
-@keyframes boil { 0% { background-position: 0 0; } 100% { background-position: 0 -30px; } }
-
-#success-potion-container {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, 50%); 
-    opacity: 0; z-index: 30; pointer-events: none; transition: all 1s ease-out;
-}
-
-#success-potion-container.show { transform: translate(-50%, -70%); opacity: 1; }
-
-#success-potion-img { width: 150px; animation: float-glow 2s infinite alternate; }
-
-@keyframes float-glow {
-    0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
-    100% { transform: translateY(-10px); filter: drop-shadow(0 0 35px rgba(255, 215, 0, 1)); }
-}
-
-#controls {
-    position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 10;
-}
-
-#stir-zone {
-    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%;
-    background: rgba(255,255,255,0.1); border: 2px dashed rgba(255, 255, 255, 0.6);
-    border-radius: 50%; touch-action: none; cursor: crosshair; z-index: 20;
-}
-
-#stir-text {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    color: white; text-shadow: 1px 1px 3px black; pointer-events: none; font-size: 16px; font-weight: bold;
-}
-
-#stir-icon {
-    width: 35px; position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -100%) rotate(0deg); 
-    transform-origin: bottom center; pointer-events: none; z-index: 25;
-}
-
-#wand-icon { width: 30px; vertical-align: middle; margin-left: 10px; transform: rotate(-45deg); }
-#wand-btn { background: #2e165c; display: block; margin: 10px auto; }
-
-#result-message {
-    position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9); color: gold; padding: 25px;
-    font-size: 22px; font-weight: bold; border-radius: 10px;
-    display: none; z-index: 40; text-align: center; border: 2px solid gold; width: 80%; line-height: 1.5;
-}
+    <script src="script.js"></script>
+</body>
+</html>

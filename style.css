@@ -1,4 +1,4 @@
-/* ربط الخط الذي قمتِ برفعه */
+/* ربط الخط (موجود بجوار الـ HTML والـ CSS وليس داخل فولدر الصور) */
 @font-face {
     font-family: 'Tajawal';
     src: url('Tajawal-Bold.ttf') format('truetype');
@@ -6,13 +6,14 @@
 
 body, html {
     margin: 0; padding: 0; width: 100%; height: 100%;
-    font-family: 'Tajawal', 'Tahoma', sans-serif; /* استخدام الخط هنا */
+    font-family: 'Tajawal', 'Tahoma', sans-serif;
     overflow: hidden; 
     background-color: #111;
 }
 
+/* تعديل مسار صورة الخلفية */
 #intro-screen {
-    width: 100%; height: 100%; background: url('lab-bg.jpg') center/cover;
+    width: 100%; height: 100%; background: url('images/lab-bg.jpg') center/cover;
     display: flex; justify-content: center; align-items: center;
 }
 .intro-box {
@@ -23,14 +24,16 @@ button {
     background: #5c162e; color: white; border: 2px solid gold;
     padding: 10px 20px; font-size: 18px; border-radius: 8px;
     cursor: pointer; font-weight: bold; margin: 5px;
-    font-family: 'Tajawal', sans-serif; /* للزرارات أيضاً */
+    font-family: 'Tajawal', sans-serif;
 }
 #reset-btn {
     position: absolute; top: 10px; right: 10px; z-index: 20;
     background: #8b0000; font-size: 14px;
 }
+
+/* تعديل مسار صورة الخلفية للمعمل */
 #lab-screen {
-    width: 100%; height: 100%; background: url('cauldron-top-bg.jpg') center/cover;
+    width: 100%; height: 100%; background: url('images/cauldron-top-bg.jpg') center/cover;
     position: relative;
 }
 #ingredients-shelf {
@@ -39,7 +42,6 @@ button {
     position: absolute; top: 50px; width: 100%; z-index: 10;
 }
 
-/* تنسيق المكونات والأسماء باللون الأبيض */
 .ingredient-item {
     display: flex; flex-direction: column; align-items: center;
     cursor: grab; touch-action: none;
@@ -47,7 +49,7 @@ button {
 }
 .ingredient-item img {
     width: 50px; height: 50px; 
-    pointer-events: none; /* لمنع المؤشر من الإمساك بالصورة بدلاً من العنصر ككل */
+    pointer-events: none;
 }
 .ingredient-item span {
     color: white;
@@ -92,9 +94,8 @@ button {
     position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 10;
 }
 
-/* تصميم الدائرة للتقليب لتصبح داخل المرجل */
 #stir-zone {
-    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%; /* تطابق سائل المرجل تماماً */
+    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%;
     background: rgba(255,255,255,0.1); border: 2px dashed rgba(255, 255, 255, 0.6);
     border-radius: 50%;
     touch-action: none; cursor: crosshair; z-index: 20;

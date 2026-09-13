@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>معمل الوصفات السحرية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="intro-screen">
+        <div class="intro-box">
+            <h1>مرحبا بكم في معمل الوصفات استمتعوا</h1>
+            <p>(احذروا الاقتراب من أي شيء دون إذن البروفيسور)</p>
+            <p>هل أنت مستعد لبدء العمل؟</p>
+            <button id="start-btn">هيا بنا</button>
+        </div>
+    </div>
+
+    <div id="lab-screen" style="display: none;">
+        <button id="reset-btn">تفريغ المرجل 🗑️</button>
+
+        <div id="ingredients-shelf">
+            <img src="ing-moth.png" class="ingredient" data-name="moth" alt="عثة فليتربي">
+            <img src="ing-bulb.png" class="ingredient" data-name="bulb" alt="زهرة باونسينغ بلب">
+            <img src="ing-foxglove.png" class="ingredient" data-name="foxglove" alt="قفاز الثعلب">
+            <img src="ing-fangs.png" class="ingredient" data-name="fangs" alt="أنياب ثعبان">
+            <img src="ing-slugs.png" class="ingredient" data-name="slugs" alt="بزاقات مقرنة">
+            <img src="ing-quills.png" class="ingredient" data-name="quills" alt="أشواك قنفذ">
+            <img src="ing-lethe.png" class="ingredient" data-name="lethe" alt="ماء نهر ليثي">
+            <img src="ing-valerian.png" class="ingredient" data-name="valerian" alt="حشيشة الهر">
+            <img src="ing-mistletoe.png" class="ingredient" data-name="mistletoe" alt="حبات الهدال">
+        </div>
+
+        <div id="cauldron-area">
+            <div id="cauldron-liquid">
+                <div class="bubbles"></div>
+            </div>
+            <img src="cauldron-empty.png" id="cauldron-img" alt="المرجل">
+            
+            <div id="success-potion-container">
+                <img id="success-potion-img" src="" alt="جرعة ناجحة">
+            </div>
+        </div>
+
+        <div id="controls">
+            <button id="fire-btn">أشعل النيران </button>
+            <button id="start-stir-btn" style="display: none;">تنفيذ أمر التقليب 🥄</button>
+            <div id="stir-zone" style="display: none;">
+                <img src="stir-rod.png" id="stir-icon" alt="عود التقليب">
+                حرك إصبعك هنا للتقليب
+            </div>
+            <button id="wand-btn" style="display: none;">
+                <img src="magic-wand.png" id="wand-icon" alt="عصا سحرية">
+                لوّح بالعصا لإنهاء الجرعة
+            </button>
+        </div>
+
+        <div id="result-message"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

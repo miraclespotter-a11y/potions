@@ -1,120 +1,212 @@
-/* ربط الخط الذي قمتِ برفعه */
-@font-face {
-    font-family: 'Tajawal';
-    src: url('Tajawal-Bold.ttf') format('truetype');
+const introScreen = document.getElementById('intro-screen');
+const labScreen = document.getElementById('lab-screen');
+const startBtn = document.getElementById('start-btn');
+const resetBtn = document.getElementById('reset-btn');
+const fireBtn = document.getElementById('fire-btn');
+const startStirBtn = document.getElementById('start-stir-btn');
+const stirZone = document.getElementById('stir-zone');
+const stirIcon = document.getElementById('stir-icon');
+const wandBtn = document.getElementById('wand-btn');
+const cauldronImg = document.getElementById('cauldron-img');
+const liquid = document.getElementById('cauldron-liquid');
+const bubbles = document.querySelector('.bubbles');
+const resultMessage = document.getElementById('result-message');
+const ingredients = document.querySelectorAll('.ingredient-item'); // تعديل الاختيار هنا
+const successContainer = document.getElementById('success-potion-container');
+const successImg = document.getElementById('success-potion-img');
+
+let addedIngredients = [];
+let isFireOn = false;
+let draggedItem = null;
+
+// متغيرات الحركة الدائرية
+let totalRotation = 0;
+let lastAngle = null;
+
+const recipes = {
+    pumpion: ['moth', 'bulb', 'foxglove'], 
+    boils: ['fangs', 'slugs', 'quills'], 
+    forgetfulness: ['lethe', 'valerian', 'mistletoe'] 
+};
+
+function getSequenceColor(sequenceArray) {
+    const seq = sequenceArray.join(',');
+    if (seq === 'moth') return 'rgba(76, 175, 80, 0.8)'; 
+    if (seq === 'moth,bulb') return 'rgba(244, 67, 54, 0.8)'; 
+    if (seq === 'moth,bulb,foxglove') return 'rgba(255, 152, 0, 0.9)'; 
+    if (seq === 'fangs') return 'rgba(255, 235, 59, 0.8)'; 
+    if (seq === 'fangs,slugs') return 'rgba(233, 30, 99, 0.8)'; 
+    if (seq === 'fangs,slugs,quills') return 'rgba(33, 150, 243, 0.8)'; 
+    if (seq === 'lethe') return 'rgba(173, 216, 230, 0.8)'; 
+    if (seq === 'lethe,valerian') return 'rgba(0, 0, 139, 0.8)'; 
+    if (seq === 'lethe,valerian,mistletoe') return 'rgba(128, 0, 128, 0.9)'; 
+    return 'rgba(70, 70, 70, 0.9)'; 
 }
 
-body, html {
-    margin: 0; padding: 0; width: 100%; height: 100%;
-    font-family: 'Tajawal', 'Tahoma', sans-serif; /* استخدام الخط هنا */
-    overflow: hidden; 
-    background-color: #111;
+startBtn.addEventListener('click', () => {
+    introScreen.style.display = 'none';
+    labScreen.style.display = 'block';
+});
+
+fireBtn.addEventListener('click', () => {
+    isFireOn = true;
+    fireBtn.style.background = 'orange';
+    fireBtn.innerText = 'النيران مشتعلة 🔥';
+    if(addedIngredients.length > 0) bubbles.style.opacity = 1; 
+});
+
+resetBtn.addEventListener('click', () => {
+    addedIngredients = [];
+    cauldronImg.src = 'cauldron-empty.png';
+    liquid.style.backgroundColor = 'transparent';
+    bubbles.style.opacity = 0;
+    isFireOn = false;
+    fireBtn.style.background = '#5c162e';
+    fireBtn.innerText = 'أشعل النيران 🔥';
+    startStirBtn.style.display = 'none';
+    stirZone.style.display = 'none';
+    wandBtn.style.display = 'none';
+    resultMessage.style.display = 'none';
+    successContainer.classList.remove('show');
+    
+    ingredients.forEach(item => {
+        item.style.display = 'flex'; // إعادة إظهار العنصر
+        item.style.position = 'static';
+    });
+});
+
+ingredients.forEach(item => item.addEventListener('pointerdown', startDrag));
+
+function startDrag(e) {
+    draggedItem = e.target;
+    draggedItem.style.position = 'absolute';
+    draggedItem.style.zIndex = 1000;
+    document.addEventListener('pointermove', dragMove);
+    document.addEventListener('pointerup', dropItem);
 }
 
-#intro-screen {
-    width: 100%; height: 100%; background: url('lab-bg.jpg') center/cover;
-    display: flex; justify-content: center; align-items: center;
-}
-.intro-box {
-    background: rgba(0, 0, 0, 0.8); color: gold; padding: 30px; 
-    border-radius: 15px; text-align: center; border: 2px solid gold;
-}
-button {
-    background: #5c162e; color: white; border: 2px solid gold;
-    padding: 10px 20px; font-size: 18px; border-radius: 8px;
-    cursor: pointer; font-weight: bold; margin: 5px;
-    font-family: 'Tajawal', sans-serif; /* للزرارات أيضاً */
-}
-#reset-btn {
-    position: absolute; top: 10px; right: 10px; z-index: 20;
-    background: #8b0000; font-size: 14px;
-}
-#lab-screen {
-    width: 100%; height: 100%; background: url('cauldron-top-bg.jpg') center/cover;
-    position: relative;
-}
-#ingredients-shelf {
-    display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;
-    background: rgba(0,0,0,0.6); padding: 15px 10px 10px; 
-    position: absolute; top: 50px; width: 100%; z-index: 10;
+function dragMove(e) {
+    if (!draggedItem) return;
+    draggedItem.style.left = e.clientX - 35 + 'px'; // تعديل المنتصف للمكون
+    draggedItem.style.top = e.clientY - 35 + 'px';
 }
 
-/* تنسيق المكونات والأسماء باللون الأبيض */
-.ingredient-item {
-    display: flex; flex-direction: column; align-items: center;
-    cursor: grab; touch-action: none;
-    width: 70px;
-}
-.ingredient-item img {
-    width: 50px; height: 50px; 
-    pointer-events: none; /* لمنع المؤشر من الإمساك بالصورة بدلاً من العنصر ككل */
-}
-.ingredient-item span {
-    color: white;
-    font-size: 12px;
-    margin-top: 5px;
-    text-align: center;
-    pointer-events: none;
+function dropItem(e) {
+    document.removeEventListener('pointermove', dragMove);
+    document.removeEventListener('pointerup', dropItem);
+    
+    if (!draggedItem) return;
+
+    const cauldronRect = document.getElementById('cauldron-area').getBoundingClientRect();
+    if (e.clientX > cauldronRect.left && e.clientX < cauldronRect.right &&
+        e.clientY > cauldronRect.top && e.clientY < cauldronRect.bottom) {
+        
+        const itemName = draggedItem.getAttribute('data-name');
+        addedIngredients.push(itemName);
+        draggedItem.style.display = 'none'; 
+        
+        const step = Math.min(addedIngredients.length, 3);
+        cauldronImg.src = `cauldron-${step}.png`;
+
+        liquid.style.backgroundColor = getSequenceColor(addedIngredients); 
+        if(isFireOn) bubbles.style.opacity = 1;
+
+        startStirBtn.style.display = 'inline-block';
+        stirZone.style.display = 'none';
+        wandBtn.style.display = 'none';
+    } else {
+        draggedItem.style.position = 'static';
+    }
+    draggedItem = null;
 }
 
-#cauldron-area {
-    position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-    width: 300px; height: 300px;
-}
-#cauldron-img {
-    width: 100%; height: 100%; position: absolute; z-index: 5; pointer-events: none;
-}
-#cauldron-liquid {
-    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%; 
-    border-radius: 50%; background-color: transparent; 
-    transition: background-color 1s; z-index: 2; overflow: hidden;
-}
-.bubbles {
-    width: 100%; height: 100%;
-    background: radial-gradient(circle, rgba(255,255,255,0.4) 10%, transparent 20%);
-    background-size: 30px 30px; opacity: 0; transition: opacity 0.5s;
-    animation: boil 2s infinite linear;
-}
-@keyframes boil { 0% { background-position: 0 0; } 100% { background-position: 0 -30px; } }
+startStirBtn.addEventListener('click', () => {
+    startStirBtn.style.display = 'none';
+    stirZone.style.display = 'block';
+    totalRotation = 0;
+    lastAngle = null;
+    stirIcon.style.transform = `translate(-50%, -100%) rotate(0rad)`;
+});
 
-#success-potion-container {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, 50%); 
-    opacity: 0; z-index: 30; pointer-events: none; transition: all 1s ease-out;
-}
-#success-potion-container.show { transform: translate(-50%, -70%); opacity: 1; }
-#success-potion-img { width: 150px; animation: float-glow 2s infinite alternate; }
-@keyframes float-glow {
-    0% { transform: translateY(0px); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
-    100% { transform: translateY(-10px); filter: drop-shadow(0 0 35px rgba(255, 215, 0, 1)); }
+// تتبع الحركة الدائرية (تمت المحافظة على حساباتك لأنها ستعمل تماماً داخل المرجل)
+stirZone.addEventListener('pointerdown', (e) => {
+    const rect = stirZone.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    lastAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+});
+
+stirZone.addEventListener('pointermove', (e) => {
+    if(e.buttons > 0 || e.pressure > 0) { 
+        const rect = stirZone.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const angle = Math.atan2(e.clientY - centerY, e.clientX - centerX);
+        
+        if (lastAngle !== null) {
+            let delta = angle - lastAngle;
+            
+            if (delta > Math.PI) delta -= 2 * Math.PI;
+            if (delta < -Math.PI) delta += 2 * Math.PI;
+            
+            totalRotation += Math.abs(delta);
+            
+            stirIcon.style.transform = `translate(-50%, -100%) rotate(${angle + Math.PI/2}rad)`;
+            
+            if (totalRotation > 15) { 
+                stirZone.style.display = 'none'; 
+                wandBtn.style.display = 'block'; 
+                totalRotation = 0;
+                lastAngle = null;
+            }
+        }
+        lastAngle = angle;
+    }
+});
+
+stirZone.addEventListener('pointerup', () => {
+    lastAngle = null;
+});
+
+wandBtn.addEventListener('click', () => {
+    checkRecipe();
+    wandBtn.style.display = 'none';
+});
+
+function checkRecipe() {
+    const hasPumpion = recipes.pumpion.every((ing, index) => addedIngredients[index] === ing);
+    if (hasPumpion && addedIngredients.length === recipes.pumpion.length) {
+        triggerSuccess('potion-pumpion.png', '🎃 لقد أعددت وصفة جرعة رأس اليقطين بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 140, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 140, 0, 1))');
+        return;
+    }
+
+    const hasBoils = recipes.boils.every((ing, index) => addedIngredients[index] === ing);
+    if (hasBoils && addedIngredients.length === recipes.boils.length) {
+        triggerSuccess('potion-boils.png', '🧪 لقد أعددت وصفة علاج الدمامل بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(135, 206, 235, 0.9)', 'drop-shadow(0 0 35px rgba(135, 206, 235, 1))');
+        return;
+    }
+
+    const hasForget = recipes.forgetfulness.every((ing, index) => addedIngredients[index] === ing);
+    if (hasForget && addedIngredients.length === recipes.forgetfulness.length) {
+        triggerSuccess('potion-forget.png', '🌌 لقد أعددت وصفة جرعة النسيان بنجاح! البروفيسور جوليوس فخور بك.', 'rgba(255, 69, 0, 0.9)', 'drop-shadow(0 0 35px rgba(255, 69, 0, 1))');
+        return;
+    }
+
+    liquid.style.backgroundColor = 'transparent'; 
+    bubbles.style.opacity = 0;
+    cauldronImg.src = 'cauldron-exploded.png'; 
+    showResult('💥 بوم! يبدو أنك أضفت مكونات خاطئة أو بترتيب غير صحيح، المرجل احترق!');
 }
 
-#controls {
-    position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 10;
+function triggerSuccess(imgSrc, msg, finalColor, shadowColor) {
+    liquid.style.backgroundColor = finalColor; 
+    successImg.src = imgSrc;
+    successImg.style.filter = shadowColor;
+    successContainer.classList.add('show'); 
+    showResult(msg);
 }
 
-/* تصميم الدائرة للتقليب لتصبح داخل المرجل */
-#stir-zone {
-    position: absolute; top: 15%; left: 15%; width: 70%; height: 70%; /* تطابق سائل المرجل تماماً */
-    background: rgba(255,255,255,0.1); border: 2px dashed rgba(255, 255, 255, 0.6);
-    border-radius: 50%;
-    touch-action: none; cursor: crosshair; z-index: 20;
-}
-#stir-text {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    color: white; text-shadow: 1px 1px 3px black; pointer-events: none; font-size: 16px; font-weight: bold;
-}
-#stir-icon {
-    width: 35px; position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -100%) rotate(0deg); 
-    transform-origin: bottom center; pointer-events: none; z-index: 25;
-}
-
-#wand-icon { width: 30px; vertical-align: middle; margin-left: 10px; transform: rotate(-45deg); }
-#wand-btn { background: #2e165c; display: block; margin: 10px auto; }
-
-#result-message {
-    position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9); color: gold; padding: 25px;
-    font-size: 22px; font-weight: bold; border-radius: 10px;
-    display: none; z-index: 40; text-align: center; border: 2px solid gold; width: 80%; line-height: 1.5;
+function showResult(text) {
+    resultMessage.innerText = text;
+    resultMessage.style.display = 'block';
 }

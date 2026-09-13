@@ -56,7 +56,7 @@ fireBtn.addEventListener('click', () => {
 
 resetBtn.addEventListener('click', () => {
     addedIngredients = [];
-    cauldronImg.src = 'images/cauldron-empty.png'; // تعديل المسار
+    cauldronImg.src = 'images/cauldron-empty.png'; 
     liquid.style.backgroundColor = 'transparent';
     bubbles.style.opacity = 0;
     isFireOn = false;
@@ -105,7 +105,7 @@ function dropItem(e) {
         draggedItem.style.display = 'none'; 
         
         const step = Math.min(addedIngredients.length, 3);
-        cauldronImg.src = `images/cauldron-${step}.png`; // تعديل المسار
+        cauldronImg.src = `images/cauldron-${step}.png`; 
 
         liquid.style.backgroundColor = getSequenceColor(addedIngredients); 
         if(isFireOn) bubbles.style.opacity = 1;
@@ -192,7 +192,7 @@ function checkRecipe() {
 
     liquid.style.backgroundColor = 'transparent'; 
     bubbles.style.opacity = 0;
-    cauldronImg.src = 'images/cauldron-exploded.png'; // تعديل المسار
+    cauldronImg.src = 'images/cauldron-exploded.png'; 
     showResult('💥 بوم! يبدو أنك أضفت مكونات خاطئة أو بترتيب غير صحيح، المرجل احترق!');
 }
 

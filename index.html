@@ -6,7 +6,7 @@
     <title>معمل الوصفات السحرية</title>
     
     <style>
-        /* ربط الخط الذي قمتِ برفعه */
+        /* ربط الخط (بافتراض أنه موجود بجوار الـ HTML وليس داخل فولدر الصور) */
         @font-face {
             font-family: 'Tajawal';
             src: url('Tajawal-Bold.ttf') format('truetype');
@@ -19,8 +19,9 @@
             background-color: #111;
         }
 
+        /* تعديل مسار صور الخلفية */
         #intro-screen {
-            width: 100%; height: 100%; background: url('lab-bg.jpg') center/cover;
+            width: 100%; height: 100%; background: url('images/lab-bg.jpg') center/cover;
             display: flex; justify-content: center; align-items: center;
         }
         .intro-box {
@@ -37,8 +38,10 @@
             position: absolute; top: 10px; right: 10px; z-index: 20;
             background: #8b0000; font-size: 14px;
         }
+        
+        /* تعديل مسار صورة الخلفية للمعمل */
         #lab-screen {
-            width: 100%; height: 100%; background: url('cauldron-top-bg.jpg') center/cover;
+            width: 100%; height: 100%; background: url('images/cauldron-top-bg.jpg') center/cover;
             position: relative;
         }
         #ingredients-shelf {
@@ -47,7 +50,6 @@
             position: absolute; top: 50px; width: 100%; z-index: 10;
         }
 
-        /* تنسيق المكونات والأسماء باللون الأبيض */
         .ingredient-item {
             display: flex; flex-direction: column; align-items: center;
             cursor: grab; touch-action: none;
@@ -100,7 +102,6 @@
             position: absolute; bottom: 20px; width: 100%; text-align: center; z-index: 10;
         }
 
-        /* تصميم الدائرة للتقليب لتصبح داخل المرجل */
         #stir-zone {
             position: absolute; top: 15%; left: 15%; width: 70%; height: 70%;
             background: rgba(255,255,255,0.1); border: 2px dashed rgba(255, 255, 255, 0.6);
@@ -142,40 +143,41 @@
         <button id="reset-btn">تفريغ المرجل 🗑️</button>
 
         <div id="ingredients-shelf">
+            <!-- تمت إضافة مسار فولدر الصور للمكونات -->
             <div class="ingredient-item" data-name="moth">
-                <img src="ing-moth.png" alt="عثة فليتربي">
+                <img src="images/ing-moth.png" alt="عثة فليتربي">
                 <span>عثة فليتربي</span>
             </div>
             <div class="ingredient-item" data-name="bulb">
-                <img src="ing-bulb.png" alt="زهرة باونسينغ بلب">
+                <img src="images/ing-bulb.png" alt="زهرة باونسينغ بلب">
                 <span>زهرة باونسينغ</span>
             </div>
             <div class="ingredient-item" data-name="foxglove">
-                <img src="ing-foxglove.png" alt="قفاز الثعلب">
+                <img src="images/ing-foxglove.png" alt="قفاز الثعلب">
                 <span>قفاز الثعلب</span>
             </div>
             <div class="ingredient-item" data-name="fangs">
-                <img src="ing-fangs.png" alt="أنياب ثعبان">
+                <img src="images/ing-fangs.png" alt="أنياب ثعبان">
                 <span>أنياب ثعبان</span>
             </div>
             <div class="ingredient-item" data-name="slugs">
-                <img src="ing-slugs.png" alt="بزاقات مقرنة">
+                <img src="images/ing-slugs.png" alt="بزاقات مقرنة">
                 <span>بزاقات مقرنة</span>
             </div>
             <div class="ingredient-item" data-name="quills">
-                <img src="ing-quills.png" alt="أشواك قنفذ">
+                <img src="images/ing-quills.png" alt="أشواك قنفذ">
                 <span>أشواك قنفذ</span>
             </div>
             <div class="ingredient-item" data-name="lethe">
-                <img src="ing-lethe.png" alt="ماء نهر ليثي">
+                <img src="images/ing-lethe.png" alt="ماء نهر ليثي">
                 <span>ماء نهر ليثي</span>
             </div>
             <div class="ingredient-item" data-name="valerian">
-                <img src="ing-valerian.png" alt="حشيشة الهر">
+                <img src="images/ing-valerian.png" alt="حشيشة الهر">
                 <span>حشيشة الهر</span>
             </div>
             <div class="ingredient-item" data-name="mistletoe">
-                <img src="ing-mistletoe.png" alt="حبات الهدال">
+                <img src="images/ing-mistletoe.png" alt="حبات الهدال">
                 <span>حبات الهدال</span>
             </div>
         </div>
@@ -184,10 +186,12 @@
             <div id="cauldron-liquid">
                 <div class="bubbles"></div>
             </div>
-            <img src="cauldron-empty.png" id="cauldron-img" alt="المرجل">
+            <!-- مسار المرجل الفارغ -->
+            <img src="images/cauldron-empty.png" id="cauldron-img" alt="المرجل">
             
             <div id="stir-zone" style="display: none;">
-                <img src="stir-rod.png" id="stir-icon" alt="عود التقليب">
+                <!-- مسار عصا التقليب -->
+                <img src="images/stir-rod.png" id="stir-icon" alt="عود التقليب">
                 <span id="stir-text">حرك في دائرة</span>
             </div>
             
@@ -201,7 +205,8 @@
             <button id="start-stir-btn" style="display: none;">تنفيذ أمر التقليب 🥄</button>
             
             <button id="wand-btn" style="display: none;">
-                <img src="magic-wand.png" id="wand-icon" alt="عصا سحرية">
+                <!-- مسار العصا السحرية -->
+                <img src="images/magic-wand.png" id="wand-icon" alt="عصا سحرية">
                 لوّح بالعصا لإنهاء الجرعة
             </button>
         </div>
@@ -209,7 +214,6 @@
         <div id="result-message"></div>
     </div>
 
-    <!-- ملف الجافاسكريبت متصل هنا بشكل سليم -->
     <script src="script.js"></script>
 </body>
 </html>
